@@ -29,13 +29,14 @@ function stopRecording() { if (!recording) return; recording = false; clearInter
 $('record').addEventListener('click', startRecording); $('stop').addEventListener('click', stopRecording); $('discard').addEventListener('click', () => { clearAudio(); $('record-status').textContent = 'Gravação excluída. Pronto para gravar.'; $('record').textContent = 'Gravar áudio'; $('timer').textContent = '00:00'; $('record').focus(); });
 window.addEventListener('pagehide', () => { releaseMicrophone(); if (blobUrl) URL.revokeObjectURL(blobUrl); });
 const slides = [
- ['Eleições, cidadania e acessibilidade', '<p>Voto em Foco · Programação Web I</p><p>Uma página educativa, apartidária, com três bibliotecas JavaScript de funcionalidades diferentes.</p><p>Objetivo: aprender sobre o voto e demonstrar como códigos prontos acrescentam recursos a uma página HTML.</p>'],
- ['Como a página foi construída', '<ul><li>HTML organiza o conteúdo, os formulários e os botões.</li><li>CSS define o visual e adapta a página ao celular.</li><li>JavaScript conecta as ações às três bibliotecas.</li></ul><p>Os arquivos das bibliotecas são carregados antes de app.js, usando defer. As cópias locais evitam depender de uma CDN durante a apresentação.</p><pre>&lt;script defer src="vendor/darkmode.js"&gt;&lt;/script&gt;\n&lt;script defer src="app.js"&gt;&lt;/script&gt;</pre>'],
+ ['Eleições, cidadania e acessibilidade', '<p>Voto em Foco · Programação Web I</p><p>Uma página educativa, apartidária, com quatro bibliotecas JavaScript de funcionalidades diferentes.</p><p>Objetivo: aprender sobre o voto e demonstrar como códigos prontos acrescentam recursos a uma página HTML.</p>'],
+ ['Como a página foi construída', '<ul><li>HTML organiza o conteúdo, os formulários e os botões.</li><li>CSS define o visual e adapta a página ao celular.</li><li>JavaScript conecta as ações às quatro bibliotecas.</li></ul><p>Os arquivos das bibliotecas são carregados antes de app.js, usando defer. As cópias locais evitam depender de uma CDN durante a apresentação.</p><pre>&lt;script defer src="vendor/darkmode.js"&gt;&lt;/script&gt;\n&lt;script defer src="app.js"&gt;&lt;/script&gt;</pre>'],
  ['01 · Darkmode.js', '<p><strong>Para que serve:</strong> alternar a aparência da página entre claro e escuro.</p><p><strong>Como usamos:</strong> o botão do cabeçalho chama toggle(). isActivated() atualiza o texto e o estado acessível do botão.</p><pre>const darkmode = new Darkmode({\n  autoMatchOsTheme: false\n});\ndarkmode.toggle();</pre><p>Demonstração: feche os slides e alterne o tema. Modo escuro é uma preferência visual, não uma garantia de acessibilidade.</p>'],
  ['02 · Alertify.js', '<p><strong>Para que serve:</strong> criar alertas e diálogos com mensagens claras.</p><p><strong>Como usamos:</strong> cada resposta do quiz abre um diálogo explicativo. O mesmo texto fica na página em uma região com role="status".</p><pre>alertify.alert(\n  "Resposta correta!",\n  "O voto em branco não vai para candidatos."\n);</pre><p>Demonstração: responda uma pergunta e observe o feedback. O significado não depende apenas da cor.</p>'],
  ['03 · RecordRTC', '<p><strong>Para que serve:</strong> gravar áudio ou vídeo no navegador. Neste projeto usamos áudio.</p><pre>const stream = await navigator.mediaDevices\n  .getUserMedia({ audio: true });\nconst recorder = RecordRTC(stream, { type: "audio" });\nrecorder.startRecording();\nrecorder.stopRecording(() =&gt; {\n  const blob = recorder.getBlob();\n});</pre><p>A API nativa solicita o microfone. A biblioteca faz a gravação. O Blob permite ouvir e baixar o arquivo, sem envio a servidor.</p>'],
+ ['04 · GSAP e tipografia', '<p><strong>Para que serve:</strong> coordenar animações e revelar elementos durante a rolagem com ScrollTrigger.</p><pre>gsap.from(".hero-copy h1", {\n  y: 22, opacity: 0, duration: 0.6\n});</pre><p><strong>Tipografia:</strong> Manrope nos títulos cria uma identidade consistente. Arial nos textos mantém a leitura familiar. Peso, tamanho e espaçamento diferenciam os níveis de informação.</p><p>As animações só são ativadas quando o sistema permite movimento. A página permanece legível sem GSAP.</p>'],
  ['Demonstração e avaliação', '<ol><li>Alterne o tema e navegue com Tab e Enter.</li><li>Responda o quiz e leia os diálogos.</li><li>Autorize o microfone, grave, pare, ouça e baixe.</li></ol><p><strong>O que as bibliotecas simplificaram:</strong> transformação visual, gestão de diálogos e captura de mídia, sem escrever esses mecanismos do zero.</p><p><strong>Limites:</strong> o microfone exige permissão e ambiente seguro. Teclado, rótulos e contraste continuam sendo responsabilidade de quem desenvolve.</p>'],
- ['Fontes e conclusão', '<p><strong>Conteúdo:</strong> Glossário Eleitoral e esclarecimentos do Tribunal Superior Eleitoral, vinculados na página.</p><p><strong>Documentação:</strong> darkmodejs.learn.uno · alertifyjs.com · recordrtc.org.</p><p>Três bibliotecas, três funções: conforto visual, feedback e expressão por voz.</p><p>O código completo, com comentários, está disponível no botão “Baixar código”.</p>']
+ ['Fontes e conclusão', '<p><strong>Conteúdo:</strong> Glossário Eleitoral e esclarecimentos do Tribunal Superior Eleitoral, vinculados na página.</p><p><strong>Documentação:</strong> darkmodejs.learn.uno · alertifyjs.com · recordrtc.org · gsap.com.</p><p>Quatro bibliotecas: aparência, feedback, áudio e movimento.</p><p>O código completo, com comentários, está disponível no botão “Baixar código”.</p>']
 ];
 let slideIndex = 0;
 function renderSlide() { $('slide-body').innerHTML = `<h2 id="slide-title">${slides[slideIndex][0]}</h2>${slides[slideIndex][1]}`; $('slide-count').textContent = `${slideIndex + 1} / ${slides.length}`; $('prev-slide').disabled = slideIndex === 0; $('next-slide').disabled = slideIndex === slides.length - 1; $('slides').scrollTop = 0; }
@@ -43,4 +44,30 @@ $('present').addEventListener('click', () => { slideIndex = 0; renderSlide(); $(
 $('close-slides').addEventListener('click', () => $('slides').close()); $('prev-slide').addEventListener('click', () => { if (slideIndex > 0) { slideIndex--; renderSlide(); } }); $('next-slide').addEventListener('click', () => { if (slideIndex < slides.length - 1) { slideIndex++; renderSlide(); } });
 $('slides').addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); $('next-slide').click(); } if (e.key === 'ArrowLeft') { e.preventDefault(); $('prev-slide').click(); } });
 // Integração opcional: somente navegação entre slides, sem acesso ao microfone.
-if (document.modelContext?.registerTool) { try { Promise.resolve(document.modelContext.registerTool({ name: 'abrir_slide', title: 'Abrir slide da apresentação', description: 'Abre um dos sete slides educativos sobre o projeto.', inputSchema: { type: 'object', properties: { numero: { type: 'integer', minimum: 1, maximum: 7 } }, required: ['numero'], additionalProperties: false }, annotations: { readOnlyHint: false, untrustedContentHint: false }, execute: input => { if (!Number.isInteger(input.numero) || input.numero < 1 || input.numero > 7) throw new Error('Informe um número de 1 a 7.'); slideIndex = input.numero - 1; renderSlide(); if (!$('slides').open) $('slides').showModal(); return { numero: input.numero, titulo: slides[slideIndex][0] }; } })).catch(() => {}); } catch {} }
+if (document.modelContext?.registerTool) { try { Promise.resolve(document.modelContext.registerTool({ name: 'abrir_slide', title: 'Abrir slide da apresentação', description: 'Abre um dos oito slides educativos sobre o projeto.', inputSchema: { type: 'object', properties: { numero: { type: 'integer', minimum: 1, maximum: 8 } }, required: ['numero'], additionalProperties: false }, annotations: { readOnlyHint: false, untrustedContentHint: false }, execute: input => { if (!Number.isInteger(input.numero) || input.numero < 1 || input.numero > 8) throw new Error('Informe um número de 1 a 8.'); slideIndex = input.numero - 1; renderSlide(); if (!$('slides').open) $('slides').showModal(); return { numero: input.numero, titulo: slides[slideIndex][0] }; } })).catch(() => {}); } catch {} }
+
+const motionCleanups = [];
+// Biblioteca 4: GSAP + ScrollTrigger. O HTML continua visível se o recurso falhar.
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  const motion = gsap.matchMedia();
+  motion.add('(prefers-reduced-motion: no-preference)', () => {
+    const intro = gsap.timeline({ defaults: { duration: 0.6, ease: 'power2.out', clearProps: 'transform,opacity,visibility' } });
+    intro.from('.hero-copy h1', { y: 22, opacity: 0 })
+      .from('.hero-copy .intro', { y: 16, opacity: 0 }, '-=0.38')
+      .from('.hero-copy .actions', { y: 12, opacity: 0 }, '-=0.4')
+      .from('.hero-panel', { y: 18, opacity: 0 }, '-=0.55');
+    document.querySelectorAll('.cards').forEach(group => {
+      const cards = Array.from(group.querySelectorAll('.card'));
+      const reveal = gsap.from(cards, { y: 18, opacity: 0, duration: 0.5, stagger: 0.09, ease: 'power2.out', clearProps: 'transform,opacity,visibility', scrollTrigger: { trigger: group, start: 'top 92%', once: true } });
+      // A navegação por teclado revela imediatamente o card que recebe foco.
+      const focusReveal = () => reveal.progress(1);
+      group.addEventListener('focusin', focusReveal);
+      motionCleanups.push(() => group.removeEventListener('focusin', focusReveal));
+    });
+    gsap.from('.recorder', { y: 16, opacity: 0, duration: 0.55, ease: 'power2.out', clearProps: 'transform,opacity,visibility', scrollTrigger: { trigger: '.recorder', start: 'top 92%', once: true } });
+    return () => { motionCleanups.splice(0).forEach(cleanup => cleanup()); };
+  });
+  // Recalcula os gatilhos quando a fonte local termina de carregar.
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
+}
