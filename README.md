@@ -37,5 +37,5 @@ Modo escuro e bibliotecas não garantem conformidade integral de acessibilidade.
 
 ## GSAP e tipografia
 GSAP 3.13.0, com plugin ScrollTrigger da mesma biblioteca: entrada sequenciada da abertura, revelação dos cards e do gravador ao rolar. gsap.matchMedia respeita prefers-reduced-motion e reverte as animações ao mudar a preferência. Nenhum movimento contínuo ou bloqueio da rolagem.
-Manrope variável nos títulos, servida localmente; Arial para texto. Arquivos Manrope via @fontsource-variable/manrope 5.2.6.
+Montserrat variável nos títulos e chamadas, servida localmente; Arial para texto. Arquivos Montserrat via @fontsource-variable/montserrat 5.2.5, sob OFL. Títulos em pesos 700–800, inspirados na comunicação de campanhas políticas.
 A inclusão do GSAP é um pedido posterior do usuário e torna o total quatro bibliotecas JavaScript. ScrollTrigger é plugin do GSAP.
